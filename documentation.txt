@@ -1,0 +1,22 @@
+TODO
+V Do full crud, song filter
+V Preload database
+do logout
+user crud
+do frontend
+documentation
+description in code
+V Error handling
+V Change models
+Upload to git
+Run Linter
+Find website (Railway?)
+
+LONG TERM
+Add alembic
+test
+add levels in security
+add renew email
+add logging
+
+
