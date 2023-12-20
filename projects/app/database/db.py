@@ -1,27 +1,35 @@
+""" Database interaction hub."""
+
 import os
 
 from sqlmodel import SQLModel
-from sqlalchemy.ext.asyncio import create_async_engine #AsyncEngine
+from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.orm import sessionmaker
 from contextlib import asynccontextmanager
 
-
+# Get Database_url from docker-compose environment
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 engine = create_async_engine(DATABASE_URL, echo=False, future=True)
 
 
-
 async def init_db():
+    """ Create database if it doesn't exist.
+    
+    The method is not asyn so it runs in sync mode.
+    For SQLModel, this will create the tables (but won't drop existing ones)
+    """
     async with engine.begin() as conn:
         await conn.run_sync(SQLModel.metadata.create_all)
 
 
 @asynccontextmanager
 async def get_session() -> AsyncSession:
-    async_session = sessionmaker(
-        engine, class_=AsyncSession, expire_on_commit=False
-    )
+    """ Creates database connection.
+    
+    Ref: https://github.com/tiangolo/sqlmodel/issues/626
+    """
+    async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
     async with async_session() as session:
         yield session
