@@ -7,11 +7,14 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.orm import sessionmaker
 from contextlib import asynccontextmanager
+from sqlalchemy.pool import NullPool
 
 # Get Database_url from docker-compose environment
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
-engine = create_async_engine(DATABASE_URL, echo=False, future=True)
+# Add poolclass=NullPool, otherwise tests fail 
+# because it calls the engine multiple times
+engine = create_async_engine(DATABASE_URL, echo=False, future=True, poolclass=NullPool,)
 
 
 async def init_db():

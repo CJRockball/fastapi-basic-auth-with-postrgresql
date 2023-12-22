@@ -1,16 +1,17 @@
 TODO
 V Do full crud, song filter
 V Preload database
-do logout
+V do logout
 user crud
 do frontend
 documentation
-description in code
+V description in code
 V Error handling
 V Change models
-Upload to git
+V Upload to git
 Run Linter
 Find website (Railway?)
+Change error to not http errors (NotFoundError(Exception))
 
 LONG TERM
 Add alembic

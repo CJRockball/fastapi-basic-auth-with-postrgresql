@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, File, UploadFile
+from fastapi import APIRouter, Depends, HTTPException, status, File, UploadFile, Request
 from sqlmodel import Session, select
 from typing import Dict
 
@@ -39,7 +39,7 @@ async def create_upload_file(file: UploadFile = File(...)) -> Dict[str,str]:
     return {"File name": file.filename, "Number of Songs Added":df_shape[0]}
 
 
-@router.post('/add_song', response_model=Song, dependencies=[Depends(get_current_user)])
+@router.post('/add_song', response_model=Song, status_code=201, dependencies=[Depends(get_current_user)])
 async def add_song(song:SongCreate):
     """ Add one song to database."""
     result = await create_song(song)
